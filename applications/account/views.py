@@ -32,16 +32,16 @@ class ActivationAPIView(APIView):
         user.save(update_fields=["is_active", "activation_code"])
         return Response("Успешно", status=200)
 
-class LoginAPIView(ObtainAuthToken):
-    serializer_class = LoginSerializer
-
-class LogoutAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(selfself, request):
-        token = get_object_or_404(Token, user=request.user)
-        token.delete()
-        return Response("Вы успешно разлогинились!")
+# class LoginAPIView(ObtainAuthToken):
+#     serializer_class = LoginSerializer
+#
+# class LogoutAPIView(APIView):
+#     permission_classes = [IsAuthenticated]
+#
+#     def post(self, request):
+#         token = get_object_or_404(Token, user=request.user)
+#         token.delete()
+#         return Response("Вы успешно разлогинились!")
 
 class ChangePasswordAPIView(APIView):
     ...

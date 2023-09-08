@@ -1,7 +1,8 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from applications.post.models import Post
+from applications.post.permissions import IsOwner
 from applications.post.serializers import PostSerializer
 
 
@@ -22,16 +23,16 @@ class CreatePostView(generics.CreateAPIView):
 class RetrievePostView(generics.RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
 
 class UpdatePostView(generics.UpdateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwner]
 
 
 class DeletePostView(generics.DestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwner]

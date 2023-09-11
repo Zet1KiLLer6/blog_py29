@@ -14,3 +14,10 @@ class PostSerializer(serializers.ModelSerializer):
         print(validated_data)
         return Post.objects.create(**validated_data)
         # return super().create(validated_data)
+
+    def to_representation(self, instance):
+        # print(instance)
+        rep = super().to_representation(instance)
+        # print(rep)
+        # rep["name"] = "John"
+        return rep

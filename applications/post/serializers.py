@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from applications.post.models import Post
+from applications.post.models import Post, Comment
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -21,3 +21,11 @@ class PostSerializer(serializers.ModelSerializer):
         # print(rep)
         # rep["name"] = "John"
         return rep
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source="owner.email")
+
+    class Meta:
+        model = Comment
+        fields = "__all__"

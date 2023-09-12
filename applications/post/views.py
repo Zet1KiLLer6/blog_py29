@@ -1,10 +1,10 @@
 from rest_framework import generics, viewsets
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from applications.post.models import Post
-from applications.post.permissions import IsOwner
-from applications.post.serializers import PostSerializer
+from applications.post.models import Post, Comment
+from applications.post.permissions import IsOwnerOrAdminOrReadOnly
+from applications.post.serializers import PostSerializer, CommentSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -20,6 +20,17 @@ class PostAPIView(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class CommentModelViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
 
 # class PostViewSet(viewsets.ViewSet):
 #     def list(self, request):

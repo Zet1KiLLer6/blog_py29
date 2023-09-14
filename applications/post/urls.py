@@ -3,6 +3,7 @@ from applications.post.views import *
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
+router.register('image', ImageModelViewSet)
 router.register('comment', CommentModelViewSet)
 router.register('', PostAPIView)
 

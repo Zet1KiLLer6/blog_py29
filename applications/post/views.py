@@ -1,13 +1,13 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from applications.post.models import Post, Comment, Like, Rating
+from applications.post.models import Post, Comment, Like, Rating, PostImage
 from applications.post.permissions import IsOwnerOrAdminOrReadOnly
-from applications.post.serializers import PostSerializer, CommentSerializer, RatingSerializer
+from applications.post.serializers import PostSerializer, CommentSerializer, RatingSerializer, PostImageSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -63,6 +63,14 @@ class CommentModelViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class ImageModelViewSet(mixins.CreateModelMixin,
+                        mixins.DestroyModelMixin,
+                        viewsets.GenericViewSet):
+    queryset = PostImage.objects.all()
+    serializer_class = PostImageSerializer
+    permission_classes = [IsAuthenticated]
 
 
 
